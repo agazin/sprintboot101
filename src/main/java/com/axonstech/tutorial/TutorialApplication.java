@@ -7,6 +7,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 @SpringBootApplication
 public class TutorialApplication {
 
@@ -22,6 +26,15 @@ public class TutorialApplication {
 			tutorial.setDescription("test description");
 			tutorial.setPublished(false);
 			tutorialRepository.save(tutorial);
+
+			List<Tutorial> tuts = IntStream.rangeClosed(1, 100).boxed().map(i -> {
+				Tutorial t = new Tutorial();
+				t.setTitle("test " + i);
+				t.setDescription("test " + i + " description");
+				t.setPublished(false);
+				return t;
+			}).collect(Collectors.toList());
+			tutorialRepository.saveAll(tuts);
 		};
 	}
 }
